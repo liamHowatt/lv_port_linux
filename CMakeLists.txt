@@ -18,12 +18,11 @@ target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR})
 
 if (LV_USE_LINUX_DRM)
 
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(LIBDRM REQUIRED libdrm)
 
-    target_include_directories(lvgl PUBLIC ${LIBDRM_INCLUDE_DIRS})
+    target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR}/../board_libs/usr/include/libdrm)
     add_executable(lvglsim main.c mouse_cursor_icon.c)
-    target_link_libraries(lvglsim lvgl lvgl::examples lvgl::demos lvgl::thorvg ${LIBDRM_LIBRARIES} m pthread)
+    target_link_libraries(lvglsim lvgl lvgl::examples lvgl::demos lvgl::thorvg drm m pthread GLESv2 EGL gbm)
+    target_compile_definitions(lvgl PRIVATE LV_LINUX_DRM_USE_EGL=1 LV_LINUX_DRM_GBM_BUFFERS=1)
 
 elseif (LV_USE_SDL)
 
@@ -63,5 +62,15 @@ else()
     add_executable(lvglsim main.c mouse_cursor_icon.c)
     target_link_libraries(lvglsim lvgl lvgl::examples lvgl::demos lvgl::thorvg m pthread)
 endif()
+
+target_include_directories(lvgl PRIVATE ${PROJECT_SOURCE_DIR}/../board_libs/usr/include)
+target_link_directories(lvglsim PRIVATE ${PROJECT_SOURCE_DIR}/../board_libs/usr/lib)
+target_link_libraries(lvglsim avformat)
+target_link_libraries(lvglsim avcodec)
+target_link_libraries(lvglsim avutil)
+target_link_libraries(lvglsim swscale)
+target_link_libraries(lvglsim z)
+# set(CMAKE_SKIP_RPATH TRUE)
+set(CMAKE_SYSROOT "${PROJECT_SOURCE_DIR}/../board_libs")
 
 add_custom_target (run COMMAND ${EXECUTABLE_OUTPUT_PATH}/lvglsim DEPENDS lvglsim)

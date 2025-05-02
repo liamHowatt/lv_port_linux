@@ -100,7 +100,7 @@ static void lv_linux_disp_init(void)
     lv_display_t * disp = lv_linux_drm_create();
 
 #if LV_USE_EVDEV
-    lv_linux_init_input_pointer(disp);
+    // lv_linux_init_input_pointer(disp);
 #endif
 
     lv_linux_drm_set_file(disp, device, -1);
@@ -190,6 +190,29 @@ int main(int argc, char **argv)
 
     /* Initialize the configured backend SDL2, FBDEV, libDRM or wayland */
     lv_linux_disp_init();
+
+        #define WIDTH 640
+        #define HEIGHT 480
+
+        // lv_tick_set_cb(tick_get_cb);
+
+        /* create a window and initialize OpenGL */
+        // glfwInit();
+        // GLFWwindow * native_window = glfwCreateWindow(WIDTH, HEIGHT, "LVGL Simulator", NULL, NULL);
+        // // glfwSwapInterval(1);
+        // glfwMakeContextCurrent(native_window);
+        // glewInit();
+        // glfwMakeContextCurrent(NULL);
+        // lv_glfw_window_t * window = lv_opengles_egl_window_create(WIDTH, HEIGHT, (void *)(uintptr_t)glfwGetX11Window(native_window), NULL, NULL, NULL);
+
+        // /* create a display that flushes to a texture */
+        // lv_display_t * texture = lv_opengles_texture_create(WIDTH, HEIGHT);
+        // lv_display_set_default(texture);
+
+        // /* add the texture to the window */
+        // unsigned int texture_id = lv_opengles_texture_get_texture_id(texture);
+        // lv_glfw_texture_t * window_texture = lv_opengles_window_add_texture(window, texture_id, WIDTH, HEIGHT);
+        // LV_UNUSED(window_texture);
 
     /*Create a Demo*/
     lv_demo_widgets();
