@@ -8,6 +8,10 @@
 #include "lvgl/demos/lv_demos.h"
 #include "lvgl/src/core/lv_global.h"
 
+// #include <GL/glew.h>
+// #include <GL/gl.h>
+// #include <assert.h>
+
 #if LV_USE_WAYLAND
 #include "backends/interface.h"
 #endif
@@ -84,7 +88,7 @@ static void lv_linux_init_input_pointer(lv_display_t *disp)
 #if LV_USE_LINUX_FBDEV
 static void lv_linux_disp_init(void)
 {
-    const char *device = getenv_default("LV_LINUX_FBDEV_DEVICE", "/dev/fb0");
+    const char *device = getenv_default("LV_LINUX_FBDEV_DEVICE", "/dev/fb1");
     lv_display_t * disp = lv_linux_fbdev_create();
 
 #if LV_USE_EVDEV
@@ -96,11 +100,11 @@ static void lv_linux_disp_init(void)
 #elif LV_USE_LINUX_DRM
 static void lv_linux_disp_init(void)
 {
-    const char *device = getenv_default("LV_LINUX_DRM_CARD", "/dev/dri/card0");
+    const char *device = getenv_default("LV_LINUX_DRM_CARD", "/dev/dri/card1");
     lv_display_t * disp = lv_linux_drm_create();
 
 #if LV_USE_EVDEV
-    lv_linux_init_input_pointer(disp);
+    // lv_linux_init_input_pointer(disp);
 #endif
 
     lv_linux_drm_set_file(disp, device, -1);
@@ -180,8 +184,13 @@ static void configure_simulator(int argc, char **argv)
     }
 }
 
+// #define WINDOW_HEIGHT 800
+// #define WINDOW_WIDTH  800
+
 int main(int argc, char **argv)
 {
+    // GLenum ret = glewInit();
+    // assert(ret == GLEW_OK);
 
     configure_simulator(argc, argv);
 
@@ -191,11 +200,44 @@ int main(int argc, char **argv)
     /* Initialize the configured backend SDL2, FBDEV, libDRM or wayland */
     lv_linux_disp_init();
 
+    // lv_sysmon_hide_performance(NULL);
+
     /*Create a Demo*/
     lv_demo_widgets();
     lv_demo_widgets_start_slideshow();
+    // lv_demo_benchmark();
+    // lv_spinner_create(lv_screen_active());
 
     lv_linux_run_loop();
+
+
+
+
+        // /* Initialize LVGL */
+        // lv_init();
+        
+        // /* GLFW setup */
+        // lv_opengles_window_t *window = lv_opengles_glfw_window_create(WINDOW_WIDTH, WINDOW_HEIGHT, true);
+        // lv_display_t *display = lv_opengles_texture_create(WINDOW_WIDTH, WINDOW_HEIGHT);
+        // unsigned int texture_id = lv_opengles_texture_get_texture_id(display);
+        // lv_opengles_window_add_texture(window, texture_id, WINDOW_WIDTH, WINDOW_HEIGHT);
+        
+        // /* Load and display glTF demo */
+        // lv_demo_gltf("A:lvgl_logo.gltf");
+        
+        // while (1) {
+        //     uint32_t time_until_next = lv_timer_handler();
+        //     if (time_until_next == LV_NO_TIMER_READY) {
+        //         time_until_next = LV_DEF_REFR_PERIOD;
+        //     }
+        //     lv_delay_ms(time_until_next);
+        // }
+        // return 0;
+
+
+
+
+
 
     return 0;
 }
