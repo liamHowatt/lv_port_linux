@@ -80,9 +80,6 @@ backend_init_t available_backends[] = {
     backend_init_x11,
 #endif
 
-#if LV_USE_OPENGLES
-    backend_init_glfw3,
-#endif
 
 #if LV_USE_EVDEV
     backend_init_evdev,

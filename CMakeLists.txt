@@ -46,7 +46,7 @@ if (CONFIG_LV_USE_LINUX_DRM)
 
 endif()
 
-if (CONFIG_LV_USE_LINUX_DRM_GBM_BUFFERS)
+if (CONFIG_LV_USE_LINUX_DRM_GBM_BUFFERS OR CONFIG_LV_LINUX_DRM_USE_EGL)
 
     message("Including GBM support")
 
@@ -185,13 +185,7 @@ endif()
 if (CONFIG_LV_USE_OPENGLES)
 
     message("Including OPENGLES support")
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(GLFW3 REQUIRED glfw3)
-    pkg_check_modules(GLEW REQUIRED glew)
 
-    list(APPEND PKG_CONFIG_LIB ${GLFW3_LIBRARIES})
-    list(APPEND PKG_CONFIG_LIB ${GLEW_LIBRARIES})
-    list(APPEND LV_LINUX_BACKEND_SRC src/lib/display_backends/glfw3.c)
 
 endif()
 
